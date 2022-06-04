@@ -21,15 +21,15 @@ async function fetchOwnedCollections(address: string): Promise<Collection[]> {
   });
   return compact(
     resp.data.map((c: any) => {
-      const contractAddress: string | undefined = c.primary_asset_contracts[0]?.address;
-      if (!contractAddress) {
+      const contract = c.primary_asset_contracts[0];
+      if (!contract || (contract.schema_name !== "ERC721" && contract.schema_name !== "ERC1155")) {
         return;
       }
       return {
         name: c.name,
         image_url: c.image_url,
         slug: c.slug,
-        contract: { address: contractAddress },
+        contract: { address: contract.address },
       };
     })
   );
