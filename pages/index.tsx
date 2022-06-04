@@ -11,6 +11,7 @@ const Home: NextPage = () => {
     <div className="container mx-auto mt-5 max-w-2xl">
       <Head>
         <title>Approved.gg</title>
+        <meta name="description" content="Simplest way to manage NFT approvals" />
       </Head>
       <Page dotBackdrop padding={0.5} width="100%">
         <Page.Header>
