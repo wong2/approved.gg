@@ -1,4 +1,4 @@
-import { Loading } from "@geist-ui/core";
+import { Loading, useToasts } from "@geist-ui/core";
 import Image from "next/image";
 import { FC, useCallback, useState } from "react";
 import { MARKETS } from "../consts";
@@ -14,19 +14,32 @@ const ApprovedIconGroup: FC<Props> = (props) => {
   const { data: statuses, mutate } = useApprovedStatus(props.address, props.contractAddress);
   const { writeAsync } = useMutateApproved(props.contractAddress);
   const [pendingMap, setPendingMap] = useState<Record<string, boolean>>({});
+  const { setToast } = useToasts({ placement: "topRight" });
 
   const setApprovalForAll = useCallback(
-    async (marketContract: string, approved: boolean) => {
-      setPendingMap((m) => ({ ...m, [marketContract]: true }));
+    async (market: typeof MARKETS[0], approved: boolean) => {
+      setPendingMap((m) => ({ ...m, [market.contract]: true }));
       try {
-        const tx = await writeAsync({ args: [marketContract, approved] });
+        const tx = await writeAsync({ args: [market.contract, approved] });
         await tx.wait();
+      } catch {
+        setToast({
+          text: `${approved ? "Approve" : "Revoke"} of ${market.name} failed`,
+          type: "error",
+          delay: 2000,
+        });
+        return;
       } finally {
-        setPendingMap((m) => ({ ...m, [marketContract]: false }));
+        setPendingMap((m) => ({ ...m, [market.contract]: false }));
       }
       mutate();
+      setToast({
+        text: `${approved ? "Approve" : "Revoke"} of ${market.name} succeeded`,
+        type: "success",
+        delay: 2000,
+      });
     },
-    [mutate, writeAsync]
+    [mutate, setToast, writeAsync]
   );
 
   return (
@@ -42,7 +55,7 @@ const ApprovedIconGroup: FC<Props> = (props) => {
               width={20}
               height={20}
               alt={market.name}
-              onClick={() => setApprovalForAll(market.contract, !approved)}
+              onClick={() => setApprovalForAll(market, !approved)}
             />
           );
         })
