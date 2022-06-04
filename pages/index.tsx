@@ -22,10 +22,19 @@ const Home: NextPage = () => {
           </div>
         </Page.Header>
         <Page.Content>
-          {account ? <CollectionTable address={account.address!} /> : <ConnectButton />}
+          {account ? (
+            <CollectionTable address={account.address!} />
+          ) : (
+            <div className="flex flex-col items-center mt-10">
+              <Text h4 className="mb-10" type="success">
+                Simplest way to manage NFT approvals
+              </Text>
+              <ConnectButton />
+            </div>
+          )}
         </Page.Content>
         <Page.Footer>
-          <p className="text-sm text-center">
+          <p className="text-sm text-center m-0 mb-1">
             Created by&nbsp;
             <Link href="https://twitter.com/wong2_x">
               <a target="_blank">@wong2</a>
