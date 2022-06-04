@@ -4,6 +4,7 @@ import Head from "next/head";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
 import CollectionTable from "../components/Table";
+import Link from "next/link";
 
 const Home: NextPage = () => {
   const { data: account } = useAccount();
@@ -23,6 +24,14 @@ const Home: NextPage = () => {
         <Page.Content>
           {account ? <CollectionTable address={account.address!} /> : <ConnectButton />}
         </Page.Content>
+        <Page.Footer>
+          <p className="text-sm text-center">
+            Created by&nbsp;
+            <Link href="https://twitter.com/wong2_x">
+              <a target="_blank">@wong2</a>
+            </Link>
+          </p>
+        </Page.Footer>
       </Page>
     </div>
   );
