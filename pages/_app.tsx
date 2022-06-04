@@ -1,6 +1,7 @@
 import { CssBaseline, GeistProvider } from "@geist-ui/core";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import "@rainbow-me/rainbowkit/styles.css";
+import PlausibleProvider from "next-plausible";
 import type { AppProps } from "next/app";
 import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
 import { alchemyProvider } from "wagmi/providers/alchemy";
@@ -25,14 +26,16 @@ const wagmiClient = createClient({
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <WagmiConfig client={wagmiClient}>
-      <RainbowKitProvider chains={chains}>
-        <GeistProvider>
-          <CssBaseline />
-          <Component {...pageProps} />
-        </GeistProvider>
-      </RainbowKitProvider>
-    </WagmiConfig>
+    <PlausibleProvider domain="approved.gg" trackOutboundLinks>
+      <WagmiConfig client={wagmiClient}>
+        <RainbowKitProvider chains={chains}>
+          <GeistProvider>
+            <CssBaseline />
+            <Component {...pageProps} />
+          </GeistProvider>
+        </RainbowKitProvider>
+      </WagmiConfig>
+    </PlausibleProvider>
   );
 }
 
