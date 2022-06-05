@@ -18,6 +18,13 @@ const ApprovedIconGroup: FC<Props> = (props) => {
 
   const setApprovalForAll = useCallback(
     async (market: typeof MARKETS[0], approved: boolean) => {
+      if (approved && market.name === "OpenSea") {
+        setToast({
+          text: "OpenSea approval WIP",
+          type: "error",
+        });
+        return;
+      }
       setPendingMap((m) => ({ ...m, [market.contract]: true }));
       try {
         const tx = await writeAsync({ args: [market.contract, approved] });
