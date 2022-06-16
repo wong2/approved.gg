@@ -9,7 +9,7 @@ export const MARKETS = [
   {
     name: "OpenSea",
     icons: [openseaDisabledIcon, openseaIcon],
-    contract: "0x7D3c534341665AC581015AeF459bfcBA305ab048",
+    contract: "0x1E0049783F008A0085193E00003D00cd54003c71",
   },
   {
     name: "LooksRare",
